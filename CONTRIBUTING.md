@@ -30,8 +30,8 @@ good idea to name it something that relates to what you are working on. If you a
 issue please reference the issue number in the branch name and associated Merge request. It is
 generally easier to make a merge request and create a branch from the issue.
 
-If you wish to merge to `main` please create a merge request and assign it to `josidd`,
-and/or `ricorne` - either to perform the merge and/or review/approve the request. Please provide a
+If you wish to merge to `main` please create a merge request and assign it to `jtsiddons`,
+and/or `rcornes` - either to perform the merge and/or review/approve the request. Please provide a
 summary of the main changes that you have made so that there is context for us to review the
 changes.
 
@@ -62,7 +62,7 @@ git checkout -b new-branch-name  # if not a new branch exclude the '-b'
 Create a virtual environment and install the dependencies
 
 ```bash
-uv venv --python 3.12  # recommended version >= 3.9 is supported
+uv venv --python 3.13  # recommended version >= 3.9 is supported
 source .venv/bin/activate  # assuming bash or zsh
 ```
 

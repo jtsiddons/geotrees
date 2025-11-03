@@ -2,8 +2,8 @@
 Installation
 ============
 
-``geotrees`` is available on PyPI. Versions of python between 3.9 and 3.13, inclusive, are supported,
-however the recommended version of python is 3.12.
+``geotrees`` is available on PyPI. Versions of python between 3.9 and 3.14, inclusive, are supported,
+however the recommended version of python is 3.13.
 
 We recommend the installation of ``geotrees`` using the uv_ package manager, however it can be installed using
 pip_.
@@ -33,8 +33,8 @@ cloning the repository and creating a new uv environment.
    git clone git@github.com/NOCSurfaceProcesses/geotrees
    cd geotrees
 
-   # Install with all dependencies and create an environment with python 3.12
-   uv sync --all-extras --dev --python 3.12
+   # Install with all dependencies and create an environment with python 3.13
+   uv sync --all-extras --dev --python 3.13
 
    # Load the environment
    source .venv/bin/activate
@@ -42,7 +42,7 @@ cloning the repository and creating a new uv environment.
    # Run the unit tests
    uv run pytest test
 
-.. note:: The recommended python version is python 3.12. By default, uv creates a virtual environment in ``.venv``.
+.. note:: The recommended python version is python 3.13. By default, uv creates a virtual environment in ``.venv``.
 
 Via Pip
 =======
