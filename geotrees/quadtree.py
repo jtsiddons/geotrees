@@ -374,7 +374,7 @@ class QuadTree:
                 if min_dist <= test_distance <= dist:
                     if exclude_self and point == test_point:
                         continue
-                    setattr(test_point, "distance", test_distance)
+                    setattr(test_point, "dist", test_distance)
                     points.append(test_point)
             return points
 
