@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.1.0 (Unreleased)
+
+Contributors to this version: Joseph Siddons (@josidd)
+
+### New features and enhancements
+
+* Added `min_dist` argument to `QuadTree.nearby_points` and `OctTree.nearby_points` (#23).
+* Calculated distance between point and results of `QuadTree.nearby_points` and
+  `OctTree.nearby_points` are stored in the `dist` property of each resultant `Record` (#23).
+
 ## 1.0.0 (2025-06-03)
 
 Contributors to this version: Joseph Siddons (@josidd)
