@@ -341,6 +341,16 @@ class TestOctTree(unittest.TestCase):
         )
         assert test_point in res
 
+        # TEST: min_distance
+        res = otree.nearby_points(
+            test_point,
+            200,
+            t_dist=timedelta(hours=5),
+            exclude_self=False,
+            min_dist=50,
+        )
+        assert expected not in res
+
     def test_wrap_query(self):
         n = 100
         d = datetime(2023, 3, 24, 12, 0)

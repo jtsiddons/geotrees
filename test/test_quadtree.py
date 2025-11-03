@@ -189,6 +189,15 @@ class TestQuadTree(unittest.TestCase):
         res = qtree.nearby_points(test_point, 200, exclude_self=False)
         assert test_point in res
 
+        # TEST: min_distance
+        res = qtree.nearby_points(
+            test_point,
+            200,
+            exclude_self=False,
+            min_dist=50,
+        )
+        assert expected not in res
+
     def test_wrap_query(self):
         n = 100
         qt_boundary = Rectangle(-180, 180, -90, 90)

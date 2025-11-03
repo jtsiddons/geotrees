@@ -411,6 +411,9 @@ class OctTree:
         than searching through all records, since only OctTree branch whose
         boundaries are close to the query SpaceTimeRecord are evaluated.
 
+        A 'dist' attribute is added to the resulting SpaceTimeRecords, for
+        convenience, saving re-computation as a later step.
+
         Parameters
         ----------
         point : SpaceTimeRecord
@@ -440,9 +443,9 @@ class OctTree:
         -------
         list[SpaceTimeRecord]
             A list of SpaceTimeRecords whose distance to the
-            query SpaceTimeRecord is <= dist, and the datetimes of the
-            SpaceTimeRecords fall within the datetime range of the query
-            SpaceTimeRecord.
+            query SpaceTimeRecord is between min_dist and dist, and the
+            datetimes of the SpaceTimeRecords fall within the datetime range of
+            the query SpaceTimeRecord.
         """
         if not points:
             points = list()
