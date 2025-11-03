@@ -475,13 +475,15 @@ class OctTree:
         # Points are only in leaf nodes
         if not self.divided:
             for test_point in self.points:
+                test_distance = test_point.distance(point)
                 if (
-                    test_point.distance(point) <= dist
+                    test_distance <= dist
                     and test_point.datetime <= point.datetime + t_dist
                     and test_point.datetime >= point.datetime - t_dist
                 ):
                     if exclude_self and point == test_point:
                         continue
+                    setattr(test_point, "distance", test_distance)
                     points.append(test_point)
             return points
 

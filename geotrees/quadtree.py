@@ -366,9 +366,11 @@ class QuadTree:
         # Points are only in leaf nodes
         if not self.divided:
             for test_point in self.points:
-                if test_point.distance(point) <= dist:
+                test_distance = test_point.distance(point)
+                if test_distance <= dist:
                     if exclude_self and point == test_point:
                         continue
+                    setattr(test_point, "distance", test_distance)
                     points.append(test_point)
             return points
 
