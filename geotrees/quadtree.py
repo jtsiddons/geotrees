@@ -324,6 +324,7 @@ class QuadTree:
         dist: float,
         points: Optional[List[Record]] = None,
         exclude_self: bool = False,
+        min_dist: float = 0.0,
     ) -> List[Record]:
         """
         Get all Records contained in the QuadTree that are nearby
@@ -348,7 +349,10 @@ class QuadTree:
             branch QuadTrees.
         exclude_self : bool
             Optionally exclude the query point from the results if the query
-            point is in the OctTree
+            point is in the QuadTree
+        min_dist : float
+            Minimum distance used in comparison. Any points with distance less
+            than this value will not be returned. Defaults to 0.0.
 
         Returns
         -------
@@ -366,15 +370,41 @@ class QuadTree:
         # Points are only in leaf nodes
         if not self.divided:
             for test_point in self.points:
-                if test_point.distance(point) <= dist:
+                test_distance = test_point.distance(point)
+                if min_dist <= test_distance <= dist:
                     if exclude_self and point == test_point:
                         continue
+                    setattr(test_point, "dist", test_distance)
                     points.append(test_point)
             return points
 
-        points = self.northwest.nearby_points(point, dist, points, exclude_self)
-        points = self.northeast.nearby_points(point, dist, points, exclude_self)
-        points = self.southwest.nearby_points(point, dist, points, exclude_self)
-        points = self.southeast.nearby_points(point, dist, points, exclude_self)
+        points = self.northwest.nearby_points(
+            point,
+            dist=dist,
+            points=points,
+            exclude_self=exclude_self,
+            min_dist=min_dist,
+        )
+        points = self.northeast.nearby_points(
+            point,
+            dist=dist,
+            points=points,
+            exclude_self=exclude_self,
+            min_dist=min_dist,
+        )
+        points = self.southwest.nearby_points(
+            point,
+            dist=dist,
+            points=points,
+            exclude_self=exclude_self,
+            min_dist=min_dist,
+        )
+        points = self.southeast.nearby_points(
+            point,
+            dist=dist,
+            points=points,
+            exclude_self=exclude_self,
+            min_dist=min_dist,
+        )
 
         return points
