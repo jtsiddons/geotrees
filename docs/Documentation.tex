@@ -64,7 +64,7 @@
 
 
 \title{GeoTrees}
-\date{Jun 23, 2025}
+\date{Nov 03, 2025}
 \release{1.0.0}
 \author{NOC Surface Processes}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -1027,8 +1027,8 @@ Test if a SpaceTimeRectangle is near to the SpaceTimeEllipse
 {}
 \pysigstopsignatures
 \sphinxAtStartPar
-A simple SpaceTimeRectangle class for GeoSpatial analysis. Defined by a
-bounding box in space and time.
+A simple SpaceTimeRectangle class for GeoSpatioTemporal analysis. Defined by
+a bounding box in space and time.
 \begin{quote}\begin{description}
 \sphinxlineitem{Parameters}\begin{itemize}
 \item {}
@@ -1515,7 +1515,7 @@ Get the number of points in the QuadTree
 \pysigstartsignatures
 \pysiglinewithargsret
 {\sphinxbfcode{\sphinxupquote{nearby\_points}}}
-{\sphinxparam{\DUrole{n}{point}}\sphinxparamcomma \sphinxparam{\DUrole{n}{dist}}\sphinxparamcomma \sphinxparam{\DUrole{n}{points}\DUrole{o}{=}\DUrole{default_value}{None}}\sphinxparamcomma \sphinxparam{\DUrole{n}{exclude\_self}\DUrole{o}{=}\DUrole{default_value}{False}}}
+{\sphinxparam{\DUrole{n}{point}}\sphinxparamcomma \sphinxparam{\DUrole{n}{dist}}\sphinxparamcomma \sphinxparam{\DUrole{n}{points}\DUrole{o}{=}\DUrole{default_value}{None}}\sphinxparamcomma \sphinxparam{\DUrole{n}{exclude\_self}\DUrole{o}{=}\DUrole{default_value}{False}}\sphinxparamcomma \sphinxparam{\DUrole{n}{min\_dist}\DUrole{o}{=}\DUrole{default_value}{0.0}}}
 {}
 \pysigstopsignatures
 \sphinxAtStartPar
@@ -1527,6 +1527,10 @@ Query the QuadTree to find all Records within the QuadTree that
 are nearby to the query Record. This search should be faster
 than searching through all records, since only QuadTree branch whose
 boundaries are close to the query Record are evaluated.
+
+\sphinxAtStartPar
+A ‘dist’ attribute is added to the resulting Records, for convenience,
+saving re\sphinxhyphen{}computation as a later step.
 \begin{quote}\begin{description}
 \sphinxlineitem{Parameters}\begin{itemize}
 \item {}
@@ -1548,16 +1552,20 @@ branch QuadTrees.
 \item {}
 \sphinxAtStartPar
 \sphinxstyleliteralstrong{\sphinxupquote{exclude\_self}} (\sphinxstyleliteralemphasis{\sphinxupquote{bool}}) \textendash{} Optionally exclude the query point from the results if the query
-point is in the OctTree
+point is in the QuadTree
+
+\item {}
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{min\_dist}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} Minimum distance used in comparison. Any points with distance less
+than this value will not be returned. Defaults to 0.0.
 
 \end{itemize}
 
 \sphinxlineitem{Returns}
 \sphinxAtStartPar
-A list of Records whose distance to the
-query Record is \textless{}= dist, and the datetimes of the
-Records fall within the datetime range of the query
-Record.
+A list of Records whose distance to the query Record is between
+min\_dist and dist. The computed distance value is added to each
+returned Record.
 
 \sphinxlineitem{Return type}
 \sphinxAtStartPar
@@ -1845,7 +1853,7 @@ Julian day, etc. as datetime values.
 \sphinxlineitem{Parameters}\begin{itemize}
 \item {}
 \sphinxAtStartPar
-\sphinxstyleliteralstrong{\sphinxupquote{boundary}} ({\hyperref[\detokenize{shape:geotrees.shape.SpaceTimeRectangle}]{\sphinxcrossref{\sphinxstyleliteralemphasis{\sphinxupquote{SpaceTimeRectangle}}}}}) \textendash{} The bounding SpaceTimeRectangle of the QuadTree
+\sphinxstyleliteralstrong{\sphinxupquote{boundary}} ({\hyperref[\detokenize{shape:geotrees.shape.SpaceTimeRectangle}]{\sphinxcrossref{\sphinxstyleliteralemphasis{\sphinxupquote{SpaceTimeRectangle}}}}}) \textendash{} The bounding SpaceTimeRectangle of the OctTree
 
 \item {}
 \sphinxAtStartPar
@@ -1858,7 +1866,7 @@ maximum depth may contain more points than the capacity.
 
 \item {}
 \sphinxAtStartPar
-\sphinxstyleliteralstrong{\sphinxupquote{max\_depth}} (\sphinxstyleliteralemphasis{\sphinxupquote{int}}\sphinxstyleliteralemphasis{\sphinxupquote{ | }}\sphinxstyleliteralemphasis{\sphinxupquote{None}}) \textendash{} The maximum depth of the QuadTree. If set, this can override the
+\sphinxstyleliteralstrong{\sphinxupquote{max\_depth}} (\sphinxstyleliteralemphasis{\sphinxupquote{int}}\sphinxstyleliteralemphasis{\sphinxupquote{ | }}\sphinxstyleliteralemphasis{\sphinxupquote{None}}) \textendash{} The maximum depth of the OctTree. If set, this can override the
 capacity for cells at the maximum depth.
 
 \end{itemize}
@@ -1875,7 +1883,7 @@ capacity for cells at the maximum depth.
 {}
 \pysigstopsignatures
 \sphinxAtStartPar
-Divide the QuadTree
+Divide the OctTree
 
 \end{fulllineitems}
 
@@ -1965,7 +1973,7 @@ Get the number of points in the OctTree
 \pysigstartsignatures
 \pysiglinewithargsret
 {\sphinxbfcode{\sphinxupquote{nearby\_points}}}
-{\sphinxparam{\DUrole{n}{point}}\sphinxparamcomma \sphinxparam{\DUrole{n}{dist}}\sphinxparamcomma \sphinxparam{\DUrole{n}{t\_dist}}\sphinxparamcomma \sphinxparam{\DUrole{n}{points}\DUrole{o}{=}\DUrole{default_value}{None}}\sphinxparamcomma \sphinxparam{\DUrole{n}{exclude\_self}\DUrole{o}{=}\DUrole{default_value}{False}}}
+{\sphinxparam{\DUrole{n}{point}}\sphinxparamcomma \sphinxparam{\DUrole{n}{dist}}\sphinxparamcomma \sphinxparam{\DUrole{n}{t\_dist}}\sphinxparamcomma \sphinxparam{\DUrole{n}{points}\DUrole{o}{=}\DUrole{default_value}{None}}\sphinxparamcomma \sphinxparam{\DUrole{n}{exclude\_self}\DUrole{o}{=}\DUrole{default_value}{False}}\sphinxparamcomma \sphinxparam{\DUrole{n}{min\_dist}\DUrole{o}{=}\DUrole{default_value}{0.0}}}
 {}
 \pysigstopsignatures
 \sphinxAtStartPar
@@ -1977,6 +1985,10 @@ Query the OctTree to find all SpaceTimeRecords within the OctTree that
 are nearby to the query SpaceTimeRecord. This search should be faster
 than searching through all records, since only OctTree branch whose
 boundaries are close to the query SpaceTimeRecord are evaluated.
+
+\sphinxAtStartPar
+A ‘dist’ attribute is added to the resulting SpaceTimeRecords, for
+convenience, saving re\sphinxhyphen{}computation as a later step.
 \begin{quote}\begin{description}
 \sphinxlineitem{Parameters}\begin{itemize}
 \item {}
@@ -2007,14 +2019,19 @@ branch OctTrees.
 \sphinxstyleliteralstrong{\sphinxupquote{exclude\_self}} (\sphinxstyleliteralemphasis{\sphinxupquote{bool}}) \textendash{} Optionally exclude the query point from the results if the query
 point is in the OctTree
 
+\item {}
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{min\_dist}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} Minimum spatial distance used in comparison. Any points with
+distance less than this value will not be returned. Defaults to 0.0.
+
 \end{itemize}
 
 \sphinxlineitem{Returns}
 \sphinxAtStartPar
 A list of SpaceTimeRecords whose distance to the
-query SpaceTimeRecord is \textless{}= dist, and the datetimes of the
-SpaceTimeRecords fall within the datetime range of the query
-SpaceTimeRecord.
+query SpaceTimeRecord is between min\_dist and dist, and the
+datetimes of the SpaceTimeRecords fall within the datetime range of
+the query SpaceTimeRecord.
 
 \sphinxlineitem{Return type}
 \sphinxAtStartPar

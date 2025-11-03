@@ -323,6 +323,9 @@ class QuadTree:
         than searching through all records, since only QuadTree branch whose
         boundaries are close to the query Record are evaluated.
 
+        A 'dist' attribute is added to the resulting Records, for convenience,
+        saving re-computation as a later step.
+
         Parameters
         ----------
         point : Record
@@ -345,10 +348,9 @@ class QuadTree:
         Returns
         -------
         list[Record]
-            A list of Records whose distance to the
-            query Record is <= dist, and the datetimes of the
-            Records fall within the datetime range of the query
-            Record.
+            A list of Records whose distance to the query Record is between
+            min_dist and dist. The computed distance value is added to each
+            returned Record.
         """
         if not points:
             points = list()
