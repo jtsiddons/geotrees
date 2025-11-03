@@ -44,14 +44,14 @@ class OctTree:
     Parameters
     ----------
     boundary : SpaceTimeRectangle
-        The bounding SpaceTimeRectangle of the QuadTree
+        The bounding SpaceTimeRectangle of the OctTree
     capacity : int
         The capacity of each cell, if max_depth is set then a cell at the
         maximum depth may contain more points than the capacity.
     depth : int
         The current depth of the cell. Initialises to zero if unset.
     max_depth : int | None
-        The maximum depth of the QuadTree. If set, this can override the
+        The maximum depth of the OctTree. If set, this can override the
         capacity for cells at the maximum depth.
     """
 
@@ -113,7 +113,7 @@ class OctTree:
         return current_len
 
     def divide(self):
-        """Divide the QuadTree"""
+        """Divide the OctTree"""
         self.northwestfwd = OctTree(
             SpaceTimeRectangle(
                 self.boundary.west,

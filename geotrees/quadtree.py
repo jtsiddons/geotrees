@@ -348,7 +348,7 @@ class QuadTree:
             branch QuadTrees.
         exclude_self : bool
             Optionally exclude the query point from the results if the query
-            point is in the OctTree
+            point is in the QuadTree
 
         Returns
         -------

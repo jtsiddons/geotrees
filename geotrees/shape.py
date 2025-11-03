@@ -238,8 +238,8 @@ class Ellipse:
 @dataclass
 class SpaceTimeRectangle:
     """
-    A simple SpaceTimeRectangle class for GeoSpatial analysis. Defined by a
-    bounding box in space and time.
+    A simple SpaceTimeRectangle class for GeoSpatioTemporal analysis. Defined by
+    a bounding box in space and time.
 
     Parameters
     ----------
