@@ -219,6 +219,16 @@ class OctTree:
             max_depth=self.max_depth,
         )
         self.divided = True
+        self.branches: list[OctTree] = [
+            self.northwestback,
+            self.northeastback,
+            self.southwestback,
+            self.southeastback,
+            self.northwestfwd,
+            self.northeastfwd,
+            self.southwestfwd,
+            self.southeastfwd,
+        ]
         self.redistribute_to_branches()
 
     def insert_into_branch(self, point: SpaceTimeRecord) -> bool:
@@ -238,22 +248,9 @@ class OctTree:
         if not self.divided:
             self.divide()
 
-        if self.northwestback.insert(point):
-            return True
-        elif self.northeastback.insert(point):
-            return True
-        elif self.southwestback.insert(point):
-            return True
-        elif self.southeastback.insert(point):
-            return True
-        elif self.northwestfwd.insert(point):
-            return True
-        elif self.northeastfwd.insert(point):
-            return True
-        elif self.southwestfwd.insert(point):
-            return True
-        elif self.southeastfwd.insert(point):
-            return True
+        for branch in self.branches:
+            if branch.insert(point):
+                return True
         return False
 
     def redistribute_to_branches(self) -> None:
@@ -294,7 +291,7 @@ class OctTree:
 
         return self.insert_into_branch(point)
 
-    def remove(self, point: SpaceTimeRecord) -> bool:  # noqa: C901
+    def remove(self, point: SpaceTimeRecord) -> bool:
         """
         Remove a SpaceTimeRecord from the OctTree if it is in the OctTree.
 
@@ -318,22 +315,9 @@ class OctTree:
                 return True
             return False
 
-        if self.northwestback.remove(point):
-            return True
-        elif self.northeastback.remove(point):
-            return True
-        elif self.southwestback.remove(point):
-            return True
-        elif self.southeastback.remove(point):
-            return True
-        elif self.northwestfwd.remove(point):
-            return True
-        elif self.northeastfwd.remove(point):
-            return True
-        elif self.southwestfwd.remove(point):
-            return True
-        elif self.southeastfwd.remove(point):
-            return True
+        for branch in self.branches:
+            if branch.remove(point):
+                return True
 
         return False
 
@@ -368,14 +352,8 @@ class OctTree:
                     points.append(point)
             return points
 
-        points = self.northwestfwd.query(rect, points)
-        points = self.northeastfwd.query(rect, points)
-        points = self.southwestfwd.query(rect, points)
-        points = self.southeastfwd.query(rect, points)
-        points = self.northwestback.query(rect, points)
-        points = self.northeastback.query(rect, points)
-        points = self.southwestback.query(rect, points)
-        points = self.southeastback.query(rect, points)
+        for branch in self.branches:
+            points = branch.query(rect, points)
 
         return points
 
@@ -410,14 +388,8 @@ class OctTree:
                     points.append(point)
             return points
 
-        points = self.northwestfwd.query_ellipse(ellipse, points)
-        points = self.northeastfwd.query_ellipse(ellipse, points)
-        points = self.southwestfwd.query_ellipse(ellipse, points)
-        points = self.southeastfwd.query_ellipse(ellipse, points)
-        points = self.northwestback.query_ellipse(ellipse, points)
-        points = self.northeastback.query_ellipse(ellipse, points)
-        points = self.southwestback.query_ellipse(ellipse, points)
-        points = self.southeastback.query_ellipse(ellipse, points)
+        for branch in self.branches:
+            points = branch.query_ellipse(ellipse, points)
 
         return points
 
@@ -492,69 +464,14 @@ class OctTree:
                     points.append(test_point)
             return points
 
-        points = self.northwestback.nearby_points(
-            point,
-            dist=dist,
-            t_dist=t_dist,
-            points=points,
-            exclude_self=exclude_self,
-            min_dist=min_dist,
-        )
-        points = self.northeastback.nearby_points(
-            point,
-            dist=dist,
-            t_dist=t_dist,
-            points=points,
-            exclude_self=exclude_self,
-            min_dist=min_dist,
-        )
-        points = self.southwestback.nearby_points(
-            point,
-            dist=dist,
-            t_dist=t_dist,
-            points=points,
-            exclude_self=exclude_self,
-            min_dist=min_dist,
-        )
-        points = self.southeastback.nearby_points(
-            point,
-            dist=dist,
-            t_dist=t_dist,
-            points=points,
-            exclude_self=exclude_self,
-            min_dist=min_dist,
-        )
-        points = self.northwestfwd.nearby_points(
-            point,
-            dist=dist,
-            t_dist=t_dist,
-            points=points,
-            exclude_self=exclude_self,
-            min_dist=min_dist,
-        )
-        points = self.northeastfwd.nearby_points(
-            point,
-            dist=dist,
-            t_dist=t_dist,
-            points=points,
-            exclude_self=exclude_self,
-            min_dist=min_dist,
-        )
-        points = self.southwestfwd.nearby_points(
-            point,
-            dist=dist,
-            t_dist=t_dist,
-            points=points,
-            exclude_self=exclude_self,
-            min_dist=min_dist,
-        )
-        points = self.southeastfwd.nearby_points(
-            point,
-            dist=dist,
-            t_dist=t_dist,
-            points=points,
-            exclude_self=exclude_self,
-            min_dist=min_dist,
-        )
+        for branch in self.branches:
+            points = branch.nearby_points(
+                point,
+                dist=dist,
+                t_dist=t_dist,
+                points=points,
+                exclude_self=exclude_self,
+                min_dist=min_dist,
+            )
 
         return points

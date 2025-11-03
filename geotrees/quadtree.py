@@ -74,10 +74,8 @@ class QuadTree:
         out += f"{indent}- contents: {self.points}\n"
         if self.divided:
             out += f"{indent}- with branches:\n"
-            out += f"{self.northwest}"
-            out += f"{self.northeast}"
-            out += f"{self.southwest}"
-            out += f"{self.southeast}"
+            for branch in self.branches:
+                out += f"{branch}"
         return out
 
     def len(self, current_len: int = 0) -> int:
@@ -86,10 +84,8 @@ class QuadTree:
         if not self.divided:
             return current_len + len(self.points)
 
-        current_len = self.northeast.len(current_len)
-        current_len = self.northwest.len(current_len)
-        current_len = self.southeast.len(current_len)
-        current_len = self.southwest.len(current_len)
+        for branch in self.branches:
+            current_len = branch.len(current_len)
 
         return current_len
 
@@ -140,6 +136,12 @@ class QuadTree:
             max_depth=self.max_depth,
         )
         self.divided = True
+        self.branches: list[QuadTree] = [
+            self.northwest,
+            self.northeast,
+            self.southwest,
+            self.southeast,
+        ]
         self.redistribute_to_branches()
 
     def insert_into_branch(self, point: Record) -> bool:
@@ -159,14 +161,9 @@ class QuadTree:
         if not self.divided:
             self.divide()
 
-        if self.northwest.insert(point):
-            return True
-        elif self.northeast.insert(point):
-            return True
-        elif self.southwest.insert(point):
-            return True
-        elif self.southeast.insert(point):
-            return True
+        for branch in self.branches:
+            if branch.insert(point):
+                return True
         return False
 
     def redistribute_to_branches(self) -> None:
@@ -231,14 +228,9 @@ class QuadTree:
                 return True
             return False
 
-        if self.northwest.remove(point):
-            return True
-        elif self.northeast.remove(point):
-            return True
-        elif self.southwest.remove(point):
-            return True
-        elif self.southeast.remove(point):
-            return True
+        for branch in self.branches:
+            if branch.remove(point):
+                return True
 
         return False
 
@@ -273,10 +265,8 @@ class QuadTree:
                     points.append(point)
             return points
 
-        points = self.northwest.query(rect, points)
-        points = self.northeast.query(rect, points)
-        points = self.southwest.query(rect, points)
-        points = self.southeast.query(rect, points)
+        for branch in self.branches:
+            points = branch.query(rect, points)
 
         return points
 
@@ -311,10 +301,8 @@ class QuadTree:
                     points.append(point)
             return points
 
-        points = self.northwest.query_ellipse(ellipse, points)
-        points = self.northeast.query_ellipse(ellipse, points)
-        points = self.southwest.query_ellipse(ellipse, points)
-        points = self.southeast.query_ellipse(ellipse, points)
+        for branch in self.branches:
+            points = branch.query_ellipse(ellipse, points)
 
         return points
 
@@ -378,33 +366,13 @@ class QuadTree:
                     points.append(test_point)
             return points
 
-        points = self.northwest.nearby_points(
-            point,
-            dist=dist,
-            points=points,
-            exclude_self=exclude_self,
-            min_dist=min_dist,
-        )
-        points = self.northeast.nearby_points(
-            point,
-            dist=dist,
-            points=points,
-            exclude_self=exclude_self,
-            min_dist=min_dist,
-        )
-        points = self.southwest.nearby_points(
-            point,
-            dist=dist,
-            points=points,
-            exclude_self=exclude_self,
-            min_dist=min_dist,
-        )
-        points = self.southeast.nearby_points(
-            point,
-            dist=dist,
-            points=points,
-            exclude_self=exclude_self,
-            min_dist=min_dist,
-        )
+        for branch in self.branches:
+            points = branch.nearby_points(
+                point,
+                dist=dist,
+                points=points,
+                exclude_self=exclude_self,
+                min_dist=min_dist,
+            )
 
         return points
