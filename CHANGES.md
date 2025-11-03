@@ -10,6 +10,16 @@ Contributors to this version: Joseph Siddons (@josidd)
 * Calculated distance between point and results of `QuadTree.nearby_points` and
   `OctTree.nearby_points` are stored in the `dist` property of each resultant `Record` (#23).
 
+### Bug fixes
+
+* Expose `OctTree` at `geotrees` level (#21).
+
+### Internal changes
+
+* Added `branches` attribute to `QuadTree` and `OctTree`, allowing for removal of duplicate code for
+  each of `QuadTree.northwest`, `QuadTree.southeast`, etc. (#24).
+* Support Python 3.14 (#15).
+
 ## 1.0.0 (2025-06-03)
 
 Contributors to this version: Joseph Siddons (@josidd)
