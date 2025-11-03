@@ -428,6 +428,7 @@ class OctTree:
         t_dist: datetime.timedelta,
         points: Optional[List[SpaceTimeRecord]] = None,
         exclude_self: bool = False,
+        min_dist: float = 0.0,
     ) -> List[SpaceTimeRecord]:
         """
         Get all SpaceTimeRecords contained in the OctTree that are nearby
@@ -458,6 +459,10 @@ class OctTree:
         exclude_self : bool
             Optionally exclude the query point from the results if the query
             point is in the OctTree
+        min_dist : float
+            Minimum spatial distance used in comparison. Any points with
+            distance less than this value will not be returned. Defaults to 0.0.
+
 
         Returns
         -------
@@ -477,7 +482,7 @@ class OctTree:
             for test_point in self.points:
                 test_distance = test_point.distance(point)
                 if (
-                    test_distance <= dist
+                    min_dist <= test_distance <= dist
                     and test_point.datetime <= point.datetime + t_dist
                     and test_point.datetime >= point.datetime - t_dist
                 ):
@@ -488,28 +493,68 @@ class OctTree:
             return points
 
         points = self.northwestback.nearby_points(
-            point, dist, t_dist, points, exclude_self
+            point,
+            dist=dist,
+            t_dist=t_dist,
+            points=points,
+            exclude_self=exclude_self,
+            min_dist=min_dist,
         )
         points = self.northeastback.nearby_points(
-            point, dist, t_dist, points, exclude_self
+            point,
+            dist=dist,
+            t_dist=t_dist,
+            points=points,
+            exclude_self=exclude_self,
+            min_dist=min_dist,
         )
         points = self.southwestback.nearby_points(
-            point, dist, t_dist, points, exclude_self
+            point,
+            dist=dist,
+            t_dist=t_dist,
+            points=points,
+            exclude_self=exclude_self,
+            min_dist=min_dist,
         )
         points = self.southeastback.nearby_points(
-            point, dist, t_dist, points, exclude_self
+            point,
+            dist=dist,
+            t_dist=t_dist,
+            points=points,
+            exclude_self=exclude_self,
+            min_dist=min_dist,
         )
         points = self.northwestfwd.nearby_points(
-            point, dist, t_dist, points, exclude_self
+            point,
+            dist=dist,
+            t_dist=t_dist,
+            points=points,
+            exclude_self=exclude_self,
+            min_dist=min_dist,
         )
         points = self.northeastfwd.nearby_points(
-            point, dist, t_dist, points, exclude_self
+            point,
+            dist=dist,
+            t_dist=t_dist,
+            points=points,
+            exclude_self=exclude_self,
+            min_dist=min_dist,
         )
         points = self.southwestfwd.nearby_points(
-            point, dist, t_dist, points, exclude_self
+            point,
+            dist=dist,
+            t_dist=t_dist,
+            points=points,
+            exclude_self=exclude_self,
+            min_dist=min_dist,
         )
         points = self.southeastfwd.nearby_points(
-            point, dist, t_dist, points, exclude_self
+            point,
+            dist=dist,
+            t_dist=t_dist,
+            points=points,
+            exclude_self=exclude_self,
+            min_dist=min_dist,
         )
 
         return points
